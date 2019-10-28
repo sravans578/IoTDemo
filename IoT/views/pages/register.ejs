@@ -60,11 +60,10 @@
                 <a class="navbar-brand" href="#"> IoT Middleware</a>
         </nav>
 
-
-<div class="login-form">
-    <form action="http://localhost:1337/login" method="post" id="login">
-        <h4 class="text-center">Login</h4> 
-        <div class="form-group">
+<div class="register-form">
+    <form action="http://localhost:1337/registration" method="post" id="register">
+        <h4 class="text-center">Device Registration</h4> 
+         <div class="form-group">
             <input type="text" class="form-control" placeholder="Device id" required="required" name="did">
         </div> 
         <div class="form-group">
@@ -72,22 +71,50 @@
         </div>
         <div class="form-group">
             <input type="password" class="form-control" placeholder="Password" required="required" name="pass">
-        </div> 
-       
-       
+        </div>
         <div class="form-group">
-            <button type="submit" class="btn btn-success btn-block">Log in</button>
+            <input type="text" class="form-control" placeholder="Device gateway link" required="required" name="dgw">
+        </div>  
+         <div class="form-group">
+            <button type="submit" class="btn btn-success btn-block">Register</button>
 
         </div>
 
-       
         <div class="d-flex justify-content-center">
-            <a href="/register">Register a Device?</a>
+            <a href="/">Have a registered device?? Login here</a>
         </div>
+
     </form>
 
 </div>
+
+
 </body>
+<script>
+    $( "#register" ).submit(function( event ) {
+      event.preventDefault();
+      var $form = $(this),
+        device_id = $form.find( "input[name='did']" ).val(),
+        user_name = $form.find( "input[name='uname']" ).val(),
+        pass = $form.find( "input[name='pass']" ).val(),
+        device_gw = $form.find( "input[name='dgw']" ).val(),
+        url = $form.attr( "action" ); 
+      // POST request
+      
+       var posting = $.post( url, {deviceid:device_id, username: user_name, password : pass,devicegw:device_gw} ); 
+      // Response
+       posting.done(function(data) {
+        console.log(data);
+				if(data.success == "Registration Successful"){
+                    alert("Registration successful");
+            //location.href = "/evaluate";
+        }
+        else{
+            alert("Registration failed, please try again");
+        }
+      });
+    });
+    </script>
 
 <script>
     $( "#login" ).submit(function( event ) {
@@ -99,13 +126,13 @@
         url = $form.attr( "action" );
       // POST request
       
-      var posting = $.post( url, {deviceid:device_id,username: user_name, password : pass});
+      var posting = $.post( url, {deviceid:device_id,username: user_name, password : pass, type: "admin"} );
       // Response
       posting.done(function(data) {
-        //console.log(data);
+        console.log(data);
 				if(data.success == "Login Successful"){
-                    alert("Login successful, Welcome");
-           // location.href = "/evaluate";
+            sessionStorage.setItem('Emp_ID', user_name);
+            location.href = "/evaluate";
         }
         else{
             alert("Login failed, please try again");
