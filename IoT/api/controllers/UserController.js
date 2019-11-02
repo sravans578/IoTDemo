@@ -48,12 +48,25 @@ module.exports = {
           });
         }
         else
-        {
+        { // On registration success, send an random 4 digit OTP to IoT server. 
+          var otp = Math.random()*4;
+          var request = require('request');
+          request.post({url:devicegw, OTP: otp}, function responseFromIoT(err, httpResponse, body) {
+          if (err) {
+             return console.error('upload failed:', err);
+          }
+             console.log("Response from IoT", body);
+          });
+
           return res.ok({
-            success: 'Registration Successful'
+            success: 'Registration Successful, awaiting OTP response.'
           });
         }
       })
    
   }
+
+  
+
+  
 };
