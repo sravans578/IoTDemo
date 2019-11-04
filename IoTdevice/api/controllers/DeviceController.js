@@ -17,8 +17,10 @@ module.exports = {
         
         var username = req.body.link;
         var otp = req.body.OTP;
+        console.log(otp);
 
-        return res.send({
+        return res.JSON({
+            DeviceID :Device_ID,
             username : user_name,
             password : pass_word,
             OTP : otp,
