@@ -6,7 +6,7 @@
  */
 
 module.exports = {
-
+//userlogin
     login: function(req, res){
 //bicrypt
       User.find({
@@ -36,6 +36,7 @@ module.exports = {
     } , 
 
     registration: function(req, res){
+      // User registraing with credentials
       User.create({//bicrypt
         "deviceid": req.body.deviceid,
         "username": req.body.username,
@@ -43,25 +44,51 @@ module.exports = {
         "devicegw": req.body.devicegw,
       }).exec(function(err) {
         if (err) {
-          return res.ok({
-            success: 'Registration Failed'
+          return res.send({
+            success: 'Registration Failed, server error'
           });
         }
         else
         { // On registration success, send an random 4 digit OTP to IoT server. 
+                  // OTp genratioon
 
-          return res.ok({
-            success: 'Registration Successful, awaiting OTP response.'
+                var otpf = Math.random()*10000;
+                var otp = Math.floor(otpf);
+                var request = require('request');
+                // Make a post HTTP request to IOT device gateway
+                //await()
+                request.post({url:req.body.devicegw,form: {OTP:otp}}, function responseFromIoT(err, httpResponse, body) {
+                if (err) {
+                    return console.error('Request failed,try again:', err);
+                }
+                console.log("Response from IoT", body);
+                //await()
+
+                // Check if OTP sent by IOT is same as generated OTP
+
+                if(body.OTP=otp){
+                  return res.ok({
+                       success: 'Registration Successful'
+                     });
+                }
+                else{
+                  return res.ok({
+                    success: 'Registration Failed'
+                  });
+                }
           });
+          // return res.ok({
+          //   success: 'Registration Successful'
+          // });
         }
       })
    
   },
-     
+   //devicelogin  
   Devicelogin: function(req, res){
     //bicrypt
           User.find({
-            "DeviceID": req.body.deviceID,
+            "deviceid": req.body.deviceID,
             "username": req.body.username,
             "password": req.body.password,
           }).exec(function(err, result) {
@@ -73,21 +100,16 @@ module.exports = {
     
             } else {
               if (result != "") {
-                var otp = Math.random()*4;
-                var request = require('request');
-                request.post({url:devicegw, OTP: otp}, function responseFromIoT(err, httpResponse, body) {
-                if (err) {
-                    return console.error('upload failed:', err);
-                }
-                console.log("Response from IoT", body);
-          });
+                console.log(result[0].devicegw);
+                var gateway = result[0].devicegw;
+               
 
           
-                //sails.log.debug('Success', JSON.stringify(result));
+          //       //sails.log.debug('Success', JSON.stringify(result));
 
-                return res.ok({
-                  success: 'Login Successful'
-                });
+          //       return res.ok({
+          //         success: 'Login Successful'
+          //       });
               } else {
                 return res.ok({
                   error: ' Please check the username and password'
