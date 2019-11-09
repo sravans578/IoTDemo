@@ -4,29 +4,52 @@
  * @description :: Server-side actions for handling incoming requests.
  * @help        :: See https://sailsjs.com/docs/concepts/actions
  */
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 module.exports = {
+
+  // $2b$10$MQL51rssKj.dAY33b/uJseA0QirlF13WsXCppMu652/Qnx0t9Coru
+
+  //$2b$10$KCkYFkN5R0FpVwUeKopHQOuwNvRsbkaD1cgsEj.I6R/xrzZw7PcZ2
+  //$2b$10$KCkYFkN5R0FpVwUeKopHQOuwNvRsbkaD1cgsEj.I6R/xrzZw7PcZ2
+
 //userlogin
     login: function(req, res){
+
+    console.log(req.body.username);
+    console.log(req.body.password);
+
+    var HP= bcrypt.hashSync(req.body.password, saltRounds);
+    console.log(HP);
+
 //bicrypt
       User.find({
         
         "username": req.body.username,
-        "password": req.body.password,
+        // "password": HashedPassword,
       }).exec(function(err, result) {
         if (err) {
+          console.log("here 1");
           sails.log.debug('Some error occurred ' + err);
           return res.ok({
             error: 'Some error occurred'
           }, 300);
 
         } else {
+          console.log(result);
           if (result != "") {
+            console.log("here");
+            if(bcrypt.compareSync(req.body.password, result[0].password)) {
+                 
+              return res.ok({
+                success: 'Login Successful'
+              });
+            }
             //sails.log.debug('Success', JSON.stringify(result));
-            return res.ok({
-              success: 'Login Successful'
-            });
+            
           } else {
+            console.log("fail");
             return res.ok({
               error: ' Please check the username and password'
             }, 400);
@@ -36,12 +59,24 @@ module.exports = {
     } , 
 
     registration: function(req, res){
+
+      console.log(req.body.password);
+      console.log(req.body.devicegw);
+      var HashedPassword;
+      var HashedGW;
+
+      // Hashing password and Gateway
+      HashedPassword = bcrypt.hashSync(req.body.password, saltRounds);
+      HashedGW = bcrypt.hashSync(req.body.devicegw, saltRounds);
+      console.log(HashedPassword);
+    
+    
       // User registraing with credentials
       User.create({//bicrypt
         "deviceid": req.body.deviceid,
         "username": req.body.username,
-        "password": req.body.password,
-        "devicegw": req.body.devicegw,
+        "password": HashedPassword,
+        "devicegw": HashedGW,
       }).exec(function(err) {
         if (err) {
           return res.send({
