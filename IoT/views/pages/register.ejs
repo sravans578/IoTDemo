@@ -131,8 +131,8 @@
       posting.done(function(data) {
         console.log(data);
 				if(data.success == "Login Successful"){
-            sessionStorage.setItem('Emp_ID', user_name);
-            location.href = "/evaluate";
+            //sessionStorage.setItem('Emp_ID', user_name);
+            //location.href = "/evaluate";
         }
         else{
             alert("Login failed, please try again");

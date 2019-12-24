@@ -104,6 +104,17 @@ module.exports = {
                 if(body.OTP=otp){
                   return res.ok({
                        success: 'Registration Successful'
+                      //  User.create({//bicrypt
+                      //   "deviceid": req.body.deviceid,
+                      //   "username": req.body.username,
+                      //   "password": HashedPassword,
+                      //   "devicegw": HashedGW,
+                      // }).exec(function(err) {
+                      //   if (err) {
+                      //     return res.send({
+                      //       success: 'Registration Failed, server error'
+                      //     });
+                      //   }
                      });
                 }
                 else{
