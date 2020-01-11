@@ -148,14 +148,7 @@ module.exports = {
               if (result != "") {
                 console.log(result[0].devicegw);
                 var gateway = result[0].devicegw;
-               
-
-          
-          //       //sails.log.debug('Success', JSON.stringify(result));
-
-          //       return res.ok({
-          //         success: 'Login Successful'
-          //       });
+              
               } else {
                 return res.ok({
                   error: ' Please check the username and password'
@@ -164,6 +157,23 @@ module.exports = {
             }
           }); 
         } , 
+
+        Getlog: function(req, res){
+          
+                Logger.find().exec(function(err, result) {
+                  if (err) {
+                    sails.log.debug('Some error occurred ' + err);
+                    return res.ok({
+                      error: 'Some error occurred'
+                    }, 300);
+          
+                  } else {
+                    return res.send({
+                      success: result
+                    });
+                  }
+                }); 
+              } , 
 
     
      

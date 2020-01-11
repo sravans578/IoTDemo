@@ -25,7 +25,8 @@ module.exports.routes = {
   'post /login' : 'UserController.login',
   'post /registration' : 'UserController.registration',
   'post /devicelogin' : 'UserController.Devicelogin',
-  //'post /login' :'UserController.log' ,
+  'get /getlog' : 'UserController.Getlog',
+
 
 
   /***************************************************************************

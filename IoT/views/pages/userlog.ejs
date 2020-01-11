@@ -56,11 +56,61 @@
  </style>
 </head>
 <body>
-        <div class="form-group">
-                <button type="submit" class="btn btn-success btn-block">View Log</button>
-    
-            </div>
- </body>
- </html>
+        <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+                <a class="navbar-brand" href="#"> IoT Middleware</a>
+        </nav>
 
- 
+
+<div class="login-form">
+    <form action="http://localhost:1337/getlog" method="post" id="log">
+       
+        <div class="form-group">
+            <button type="submit" class="btn btn-success btn-block">View log</button>
+
+        </div>
+
+       
+    </form>
+
+</div>
+
+<div class="container">
+    <table style="width:100%" class="table">
+        <tr>
+            <th>IP</th>
+            <th>Request URL</th>
+            <th>Request Method</th>
+        </tr>
+        
+    </table>
+    </body>
+</div>
+
+<script>
+    $( "#log" ).submit(function( event ) {
+      event.preventDefault();
+      var $form = $(this),
+        device_id = $form.find( "input[name='did']" ).val(),
+        user_name = $form.find( "input[name='uname']" ).val(),
+        pass = $form.find( "input[name='pass']" ).val(),
+        url = $form.attr( "action" );
+
+      // GET request
+      var posting = $.get(url);
+
+      // Response
+      posting.done(function(data) {
+
+        $.each(data.success, function(i, result){
+        console.log(result);
+        $("table.table").append("<tr><td>" + result.IP + "</td><td>" + result.requestUrl +"</td><td>"+result.method+ "</td></tr>");
+        console.log("-----");
+        }) 
+				
+                    
+      });
+    });
+    </script>
+
+</html>  
+
