@@ -21,10 +21,11 @@ module.exports.routes = {
 
   '/': { view: 'pages/homepage' },
   '/register': { view: 'pages/register' },
-  
+  '/log' : { view: 'pages/userlog'},
   'post /login' : 'UserController.login',
   'post /registration' : 'UserController.registration',
   'post /devicelogin' : 'UserController.Devicelogin',
+  //'post /login' :'UserController.log' ,
 
 
   /***************************************************************************
