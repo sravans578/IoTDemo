@@ -75,12 +75,19 @@
 </div>
 
 <div class="container">
-    <table style="width:100%" class="table">
-        <tr>
-            <th>IP</th>
-            <th>Request URL</th>
-            <th>Request Method</th>
-        </tr>
+    <table style="width:100%; display:none" class="table table-striped table-bordered" id="logtable">
+
+        <thead class="thead-dark">
+            <tr>
+              <th scope="col">IP</th>
+              <th scope="col">Request URL</th>
+              <th scope="col">Request Body</th>
+              <th scope="col">Request Method</th>
+              <th scope="col">Request Header</th>
+              <th scope="col">Response Time</th>
+              <th scope="col">Response Code</th>
+            </tr>
+          </thead>
         
     </table>
     </body>
@@ -100,11 +107,11 @@
 
       // Response
       posting.done(function(data) {
+        $('#logtable').show();
 
         $.each(data.success, function(i, result){
         console.log(result);
-        $("table.table").append("<tr><td>" + result.IP + "</td><td>" + result.requestUrl +"</td><td>"+result.method+ "</td></tr>");
-        console.log("-----");
+        $("table.table").append("<tr><td>" + result.IP + "</td><td>" + result.requestUrl +"</td><td>"+result.requestBody+"</td><td>"+result.method+"</td><td>"+result.requestHeaders+"</td><td>"+result.responseTime+"</td><td>"+result.responseCode+ "</td></tr>");
         }) 
 				
                     
