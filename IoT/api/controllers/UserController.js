@@ -9,10 +9,51 @@ const saltRounds = 10;
 const jwt = require('jsonwebtoken');
 module.exports = {
 
-  // $2b$10$MQL51rssKj.dAY33b/uJseA0QirlF13WsXCppMu652/Qnx0t9Coru
+   router: function(req, res){
+    //Get auth header value
+    const bearerHeader = req.headers['authorization'];
+    //Check if bearer is undefined
+    if(typeof bearerHeader!== 'undefined') {
+        //Split at the space
+        const bearer = bearerHeader.split(' ');
+        //Get token from array
+        const bearerToken = bearer[1];
+        //Set the token
+        req.token = bearerToken;
+      
+        //jwt verification
+        console.log("reached here");
+          jwt.verify(req.token, 'secretkey', (err, authData) => {
+              if(err) {
+                res.json({
+                  message: 'Token expired',
 
-  //$2b$10$KCkYFkN5R0FpVwUeKopHQOuwNvRsbkaD1cgsEj.I6R/xrzZw7PcZ2
-  //$2b$10$KCkYFkN5R0FpVwUeKopHQOuwNvRsbkaD1cgsEj.I6R/xrzZw7PcZ2
+              });
+              } else{
+                  res.json({
+                      message: 'success',
+                      authData
+                  });
+      
+              }
+          });    
+        
+
+    } else{
+        //Forbidden
+        return res.json({
+          message: 'Token missing',
+      });
+    }
+},
+
+
+  
+
+  verifyToken: function(req, res, next){
+    //Get auth header value
+    
+},
 
 
 //userlogin
@@ -105,17 +146,7 @@ module.exports = {
                 if(body.OTP=otp){
                   return res.ok({
                        success: 'Registration Successful'
-                      //  User.create({//bicrypt
-                      //   "deviceid": req.body.deviceid,
-                      //   "username": req.body.username,
-                      //   "password": HashedPassword,
-                      //   "devicegw": HashedGW,
-                      // }).exec(function(err) {
-                      //   if (err) {
-                      //     return res.send({
-                      //       success: 'Registration Failed, server error'
-                      //     });
-                      //   }
+                      
                      });
                 }
                 else{
@@ -157,10 +188,25 @@ module.exports = {
                    
                   }
                   jwt.sign({user}, 'secretkey' ,{ expiresIn: '30s'}, (err, token) => {
-                    res.json({
+                    if (err) {
+
+                      return res.json({
+                        
+                        message: "Token invalid"
+                    });
+
+
+                    }
+                    
+                    else {
+
+              
+                    return res.json({
                         Token: token,
                         message: "Login Successful"
                     });
+
+                  }
                 });
                   // return res.ok({
                   //   success: 'Login Successful',

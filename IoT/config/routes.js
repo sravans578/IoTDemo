@@ -26,6 +26,7 @@ module.exports.routes = {
   'post /registration' : 'UserController.registration',
   'post /devicelogin' : 'UserController.Devicelogin',
   'get /getlog' : 'UserController.Getlog',
+  'post /router' : 'UserController.router',
 
 
 
