@@ -6,7 +6,7 @@
  */
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
-
+const jwt = require('jsonwebtoken');
 module.exports = {
 
   // $2b$10$MQL51rssKj.dAY33b/uJseA0QirlF13WsXCppMu652/Qnx0t9Coru
@@ -145,8 +145,18 @@ module.exports = {
               }, 300);
     
             } else {
+              // Login Successful
               if (result != "") {
-                console.log(result[0].devicegw);
+                //console.log(result);
+                //console.log(result[0].devicegw);
+                // Auth token payload
+                const user = {
+                 
+                  id: result[0].deviceid,
+                  username: result[0].username ,
+                 
+                }
+                console.log(user);
                 var gateway = result[0].devicegw;
               
               } else {
