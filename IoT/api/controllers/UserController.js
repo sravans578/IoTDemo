@@ -14,6 +14,7 @@ module.exports = {
   //$2b$10$KCkYFkN5R0FpVwUeKopHQOuwNvRsbkaD1cgsEj.I6R/xrzZw7PcZ2
   //$2b$10$KCkYFkN5R0FpVwUeKopHQOuwNvRsbkaD1cgsEj.I6R/xrzZw7PcZ2
 
+
 //userlogin
     login: function(req, res){
 
@@ -136,7 +137,6 @@ module.exports = {
           User.find({
             "deviceid": req.body.deviceID,
             "username": req.body.username,
-            "password": req.body.password,
           }).exec(function(err, result) {
             if (err) {
               sails.log.debug('Some error occurred ' + err);
@@ -147,23 +147,40 @@ module.exports = {
             } else {
               // Login Successful
               if (result != "") {
+
+                if(bcrypt.compareSync(req.body.password, result[0].password)) {
+                 
+                  const user = {
+                 
+                    id: result[0].deviceid,
+                    username: result[0].username ,
+                   
+                  }
+                  jwt.sign({user}, 'secretkey' ,{ expiresIn: '30s'}, (err, token) => {
+                    res.json({
+                        Token: token,
+                        message: "Login Successful"
+                    });
+                });
+                  // return res.ok({
+                  //   success: 'Login Successful',
+                  //   USER: user,
+                  // });
+                }
+
+                else {
+                  return res.ok({
+                    error: ' Please check the username and password'
+                  }, 400);
+                }
                 //console.log(result);
                 //console.log(result[0].devicegw);
                 // Auth token payload
-                const user = {
-                 
-                  id: result[0].deviceid,
-                  username: result[0].username ,
-                 
-                }
+                
                 console.log(user);
                 var gateway = result[0].devicegw;
               
-              } else {
-                return res.ok({
-                  error: ' Please check the username and password'
-                }, 400);
-              }
+              } 
             }
           }); 
         } , 
@@ -184,7 +201,7 @@ module.exports = {
                   }
                 }); 
               } , 
-
+              
     
      
 
