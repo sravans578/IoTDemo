@@ -21,6 +21,7 @@ module.exports.routes = {
 
   '/': { view: 'pages/homepage' },
   'post /OTPgateway' : 'Device.gateway',
+  '/data': 'DeviceController.dataGenerator',
   
 
 
