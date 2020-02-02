@@ -3,7 +3,10 @@
  *
  * @description :: Server-side actions for handling incoming requests.
  * @help        :: See https://sailsjs.com/docs/concepts/actions
+ * 
  */
+
+ 
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const jwt = require('jsonwebtoken');
@@ -27,7 +30,6 @@ module.exports = {
               if(err) {
                 res.json({
                   message: 'Token expired',
-
               });
               } else{
                   res.json({
@@ -165,6 +167,10 @@ module.exports = {
    //devicelogin  
   Devicelogin: function(req, res){
     //bicrypt
+          console.log(" i a mhere");
+          console.log(req.body.deviceID);
+          console.log(req.body.username);
+          console.log(req.body.password);
           User.find({
             "deviceid": req.body.deviceID,
             "username": req.body.username,
@@ -179,49 +185,40 @@ module.exports = {
               // Login Successful
               if (result != "") {
 
+                console.log("succesful DB search");
+
                 if(bcrypt.compareSync(req.body.password, result[0].password)) {
-                 
+                  
+                  console.log("password macthed");
                   const user = {
-                 
                     id: result[0].deviceid,
                     username: result[0].username ,
-                   
                   }
-                  jwt.sign({user}, 'secretkey' ,{ expiresIn: '30s'}, (err, token) => {
+
+                  jwt.sign({user}, 'secretkey' ,{ expiresIn: '60s'}, (err, token) => {
                     if (err) {
-
-                      return res.json({
-                        
-                        message: "Token invalid"
+                      console.log(" JWT Signing error");
+                      return res.JSON({ 
+                        message: "Token invalid",
                     });
-
-
                     }
                     
                     else {
-
-              
-                    return res.json({
+                      console.log("Succesful login, send token");
+                      return res.json({
                         Token: token,
                         message: "Login Successful"
-                    });
-
+                      });
                   }
                 });
-                  // return res.ok({
-                  //   success: 'Login Successful',
-                  //   USER: user,
-                  // });
                 }
+                // fix this later
 
-                else {
-                  return res.ok({
-                    error: ' Please check the username and password'
-                  }, 400);
-                }
-                //console.log(result);
-                //console.log(result[0].devicegw);
-                // Auth token payload
+                // else {
+                //   return res.ok({
+                //     error: ' Please check the username and password'
+                //   }, 400);
+                // }
                 
                 console.log(user);
                 var gateway = result[0].devicegw;
