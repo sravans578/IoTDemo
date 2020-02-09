@@ -4,7 +4,7 @@
  *
  * @description :: Server-side actions for handling incoming requests.
  * @help        :: See https://sailsjs.com/docs/concepts/actions
- * 
+ *
  */
 
 
@@ -53,7 +53,8 @@ module.exports = {
 
   //userlogin
   login: function(req, res){
-    console.log(req.body.username);
+    console.log('Entered login');
+    console.log(req.body);
     console.log(req.body.password);
     var HP= bcrypt.hashSync(req.body.password, saltRounds);
     console.log(HP);
@@ -204,8 +205,8 @@ module.exports = {
   } ,
 
   Getlog: function(req, res){
-
-    Logger.find().exec((err, result) => {
+    console.log(req.body);
+    Logger.find({'deviceID': req.body.deviceID}).exec((err, result) => {
       if (err) {
         sails.log.debug('Some error occurred ' + err);
         return res.ok({

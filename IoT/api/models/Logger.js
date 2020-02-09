@@ -12,32 +12,42 @@ module.exports = {
     IP:{
       type: 'string',
       required: false
-     },
+    },
+
+    deviceID:{
+      type: 'string',
+      required: false
+    },
  
-     requestUrl:{
+    requestUrl:{
       type: 'string',
       required: false
-     },
-     requestBody:{
+    },
+
+    requestBody:{
       type: 'string',
       required: false
-     },
-     method:{
+    },
+
+    method:{
       type: 'string',
       required: false
-     },
-     requestHeaders:{
+    },
+
+    requestHeaders:{
       type: 'string',
       required: false
-     },
-     responseTime:{
+    },
+ 
+    responseTime:{
       type: 'string',
       required: false
-     },
-     responseCode:{
+    },
+
+    responseCode:{
       type: 'string',
       required: false
-     },
+    },
   },
 
 };

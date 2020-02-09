@@ -83,7 +83,7 @@
               <th scope="col">Request URL</th>
               <th scope="col">Request Body</th>
               <th scope="col">Request Method</th>
-              <th scope="col">Request Header</th>
+              <th scope="col">Time</th>
               <th scope="col">Response Time</th>
               <th scope="col">Response Code</th>
             </tr>
@@ -102,15 +102,16 @@
         pass = $form.find( "input[name='pass']" ).val(),
         url = $form.attr( "action" );
 
-      // GET request
-      var posting = $.get(url);
+      // POST request
+      // !!! Important -> for now hardcoded deviceID 'test' -> change this with deviceID that is dynamically fetched.
+      var posting = $.post( url, {deviceID:'test'});
 
       // Response
       posting.done(function(data) {
         $('#logtable').show();
 
         $.each(data.success, function(i, result){
-        console.log(result);
+        // console.log(result);
         $("table.table").append("<tr><td>" + result.IP + "</td><td>" + result.requestUrl +"</td><td>"+result.requestBody+"</td><td>"+result.method+"</td><td>"+result.requestHeaders+"</td><td>"+result.responseTime+"</td><td>"+result.responseCode+ "</td></tr>");
         }) 
 				

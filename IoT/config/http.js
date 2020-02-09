@@ -44,24 +44,26 @@ module.exports.http = {
     logger: async function(req, res, next) {
       console.log('Initializing `logger` (HTTP middleware)...');
       console.log('Received HTTP request: ' + req.method + ' ' + req.path + ' ' + req.ip);
-      res.on('finish', async function() {
+      res.on('finish', async () => {
         console.log('Sent HTTP response: ' + res.statusCode);
+        console.log(req.headers.host);
         await Logger.create({
           IP: req.ip,
+          deviceID: req.body.deviceID,
           requestUrl: req.path,
           requestBody: JSON.stringify(req.body),
           method: req.method,
           //to be fixed Data too long for column
-         // requestHeaders: JSON.stringify(req.headers),
+          requestHeaders: req._startTime,
           responseTime: new Date() - req._startTime + ' ms',
           responseCode: res.statusCode,
-         
-        }).exec(function(err, result) {
+        // eslint-disable-next-line no-unused-vars
+        }).exec((err, result) => {
           if (err) {
             console.log('Some error occured ' + err);
           }
         });
-      })
+      });
 
       return next();
     },
