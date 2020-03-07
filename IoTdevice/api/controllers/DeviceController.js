@@ -6,6 +6,7 @@
  */
 
 var request = require('request');
+const jwt = require('jsonwebtoken');
 
 //Token to be included in header while making requests
 var TOKEN;
@@ -53,10 +54,15 @@ module.exports = {
         'authorization': 'Bearer'+ ' ' + TOKEN,
       };
       console.log(headers);
-      var jsonDataObj = {'deviceID': DEVICE_ID, data: 'Sample data'};
+      var data = {
+        value: 'message',
+        destination: '192.168.1.1',
+      };
+      var encrypted_data = jwt.sign({ data: data }, 'secretkey');
+      var jsonDataObj = {'deviceID': DEVICE_ID, data: encrypted_data};
       request.post({headers: headers, url:'http://localhost:1337/router', body: jsonDataObj, json:true}, function optionalCallback(err, httpResponse, body) {
         if (err) {
-          console.log('Enetered error block');
+          console.log('Entered error block');
           return console.error('Error', err);
         }
         // console.log(httpResponse);
