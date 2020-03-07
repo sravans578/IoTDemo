@@ -20,14 +20,8 @@ module.exports.routes = {
   ***************************************************************************/
 
   '/': { view: 'pages/homepage' },
-  '/register': { view: 'pages/register' },
-  '/log' : { view: 'pages/userlog'},
-  'post /login' : 'UserController.login',
-  'post /registration' : 'UserController.registration',
-  'post /devicelogin' : 'UserController.Devicelogin',
-  'post /getlog' : 'UserController.Getlog',
-  'post /router' : 'UserController.router',
-
+  'post /OTPgateway' : 'Device.gateway',
+  '/data': 'DeviceController.dataGenerator',
 
 
   /***************************************************************************

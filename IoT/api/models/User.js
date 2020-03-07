@@ -9,15 +9,24 @@ module.exports = {
 
   attributes: {
 
-    name:{
+    deviceid:{
      type: 'string',
      required: true
     },
-    password:
+    username:
     {
       type: 'string',
       required: true,
     },  
+    password:{
+      type: 'string',
+      required: true
+     },
+     devicegw:
+     {
+       type: 'string',
+       required: true,
+     },  
 
   },
 

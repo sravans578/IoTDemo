@@ -1,5 +1,5 @@
 {
-  "name": "io-t",
+  "name": "io-tdevice",
   "private": true,
   "version": "0.0.0",
   "description": "a Sails application",
@@ -8,19 +8,17 @@
     "@sailshq/connect-redis": "^3.2.1",
     "@sailshq/lodash": "^3.10.3",
     "@sailshq/socket.io-redis": "^5.2.0",
-    "bcrypt": "^3.0.6",
     "grunt": "1.0.4",
-    "jsonwebtoken": "^8.5.1",
     "jwt-token-encrypt": "^1.0.4",
     "request": "^2.88.0",
+    "requests": "^0.3.0",
     "sails": "^1.2.3",
     "sails-hook-grunt": "^4.0.0",
     "sails-hook-orm": "^2.1.1",
-    "sails-hook-sockets": "^2.0.0",
-    "sails-mysql": "^1.0.1"
+    "sails-hook-sockets": "^2.0.0"
   },
   "devDependencies": {
-    "eslint": "5.16.0"
+    "eslint": "^5.16.0"
   },
   "scripts": {
     "start": "NODE_ENV=production node app.js",
@@ -31,7 +29,7 @@
   "main": "app.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/sravan/io-t.git"
+    "url": "git://github.com/sravan/io-tdevice.git"
   },
   "author": "sravan",
   "license": "",

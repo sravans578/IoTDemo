@@ -62,55 +62,60 @@
 
 
 <div class="login-form">
-    <form action="http://localhost:1337/login" method="post" id="login">
-        <h4 class="text-center">Login</h4> 
-        <div class="form-group">
-            <input type="text" class="form-control" placeholder="Device id" required="required" name="did">
-        </div> 
-        <div class="form-group">
-            <input type="text" class="form-control" placeholder="Username" required="required" name="uname">
-        </div>
-        <div class="form-group">
-            <input type="password" class="form-control" placeholder="Password" required="required" name="pass">
-        </div> 
-       
+    <form action="http://localhost:1337/getlog" method="post" id="log">
        
         <div class="form-group">
-            <button type="submit" class="btn btn-success btn-block">Log in</button>
+            <button type="submit" class="btn btn-success btn-block">View log</button>
 
         </div>
 
        
-        <div class="d-flex justify-content-center">
-            <a href="/register">Register a Device?</a>
-        </div>
     </form>
 
 </div>
-</body>
+
+<div class="container">
+    <table style="width:100%; display:none" class="table table-striped table-bordered" id="logtable">
+
+        <thead class="thead-dark">
+            <tr>
+              <th scope="col">IP</th>
+              <th scope="col">Request URL</th>
+              <th scope="col">Request Body</th>
+              <th scope="col">Request Method</th>
+              <th scope="col">Time</th>
+              <th scope="col">Response Time</th>
+              <th scope="col">Response Code</th>
+            </tr>
+          </thead>
+        
+    </table>
+    </body>
+</div>
 
 <script>
-    $( "#login" ).submit(function( event ) {
+    $( "#log" ).submit(function( event ) {
       event.preventDefault();
       var $form = $(this),
         device_id = $form.find( "input[name='did']" ).val(),
         user_name = $form.find( "input[name='uname']" ).val(),
         pass = $form.find( "input[name='pass']" ).val(),
         url = $form.attr( "action" );
+
       // POST request
-      
-      var posting = $.post( url, {deviceid:device_id,username: user_name, password : pass});
+      // !!! Important -> for now hardcoded deviceID 'test' -> change this with deviceID that is dynamically fetched.
+      var posting = $.post( url, {deviceID:'test'});
+
       // Response
       posting.done(function(data) {
-        //console.log(data);
-				if(data.success == "Login Successful"){
-                    alert("Login successful, Welcome");
-                    // redirecting to log page
-                    location.href = "/log";
-        }
-        else{
-            alert("Login failed, please try again");
-        }
+        $('#logtable').show();
+
+        $.each(data.success, function(i, result){
+        // console.log(result);
+        $("table.table").append("<tr><td>" + result.IP + "</td><td>" + result.requestUrl +"</td><td>"+result.requestBody+"</td><td>"+result.method+"</td><td>"+result.requestHeaders+"</td><td>"+result.responseTime+"</td><td>"+result.responseCode+ "</td></tr>");
+        }) 
+				
+                    
       });
     });
     </script>
