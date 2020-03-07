@@ -11,6 +11,7 @@
     "bcrypt": "^3.0.6",
     "grunt": "1.0.4",
     "jsonwebtoken": "^8.5.1",
+    "jwt-token-encrypt": "^1.0.4",
     "request": "^2.88.0",
     "sails": "^1.2.3",
     "sails-hook-grunt": "^4.0.0",

@@ -32,6 +32,9 @@ module.exports = {
             message: 'Token expired',
           });
         } else {
+          // Decrypting data
+          var decoded = jwt.verify(req.body.data, 'secretkey');
+          console.log(decoded);
           res.json({
             message: 'success',
             authData
