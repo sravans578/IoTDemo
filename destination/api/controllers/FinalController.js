@@ -8,8 +8,9 @@
 module.exports = {
   
 display : function (req, res) {
-
-    console.log(req.body);
+    console.log('here');
+    console.log(req.body.data);
+    // console.log(req);
 }
 
 };
