@@ -11,6 +11,8 @@
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const jwt = require('jsonwebtoken');
+var http = require('http');
+const request = require('request');
 module.exports = {
 
   router: function(req, res){
@@ -206,6 +208,18 @@ module.exports = {
       }
     });
   } ,
+
+  proxy: function(client_req, client_res) {
+    // edit this from req from IoT 
+    // var jsonDataObj = {'deviceID': DEVICE_ID, data: encrypted_data};
+     var jsonDataObj = {data: 'sravans578'};
+      request.post({url:'http://localhost:1400/putData', body: jsonDataObj, json:true}, function optionalCallback(err, httpResponse, body) {
+        if (err) {
+          console.log('Entered error block');
+          return console.error('Error', err);
+        }
+      });
+  },
 
   Getlog: function(req, res){
     console.log(req.body);
