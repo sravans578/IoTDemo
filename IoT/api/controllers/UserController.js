@@ -37,7 +37,18 @@ module.exports = {
           // Decrypting data
           console.log ('Data before decryption' + ' :' + req.body.data);
           var decoded = jwt.verify(req.body.data, 'secretkey');
-          console.log('Data after decrption' + ':' + decoded);
+          console.log(decoded.data.value);
+          console.log('Data after decrption' + ':' + JSON.stringify(decoded));
+          var decrypted_data = {
+            data: decoded.data.value,
+          }
+          console.log('Data destionation' + ':' + JSON.stringify(decoded.destination));
+          request.post({url:decoded.data.destination, body: decrypted_data, json:true}, function optionalCallback(err, httpResponse, body) {
+            if (err) {
+              console.log('FAILED TO SEND TO DESTINATION SERVER');
+              return console.error('Error', err);
+            }
+          });
           res.json({
             message: 'success',
             authData
