@@ -7,7 +7,8 @@
 
 var request = require('request');
 const jwt = require('jsonwebtoken');
-
+const middleware_url ='http://192.168.1.3:1337';
+const destination_url = 'http://192.168.1.3:1400/putData';
 //Token to be included in header while making requests
 var TOKEN;
 
@@ -21,7 +22,7 @@ module.exports = {
   login: function(req, res) {
 
     var jsonDataObj = {'deviceID': DEVICE_ID, 'username': USER_NAME, 'password': PASSWORD};
-    request.post( {url:'http://localhost:1337/devicelogin', body: jsonDataObj, json:true}, function optionalCallback(err, httpResponse, body) {
+    request.post( {url:middleware_url+'/devicelogin', body: jsonDataObj, json:true}, function optionalCallback(err, httpResponse, body) {
 
       if (err) {
         return console.error('upload failed:', err);
@@ -56,11 +57,13 @@ module.exports = {
       console.log(headers);
       var data = {
         value: 'message',
-        destination: '192.168.1.1',
+        // This should be the dest server address
+        destination: destination_url,
       };
       var encrypted_data = jwt.sign({ data: data }, 'secretkey');
       var jsonDataObj = {'deviceID': DEVICE_ID, data: encrypted_data};
-      request.post({headers: headers, url:'http://localhost:1337/router', body: jsonDataObj, json:true}, function optionalCallback(err, httpResponse, body) {
+      
+      request.post({headers: headers, url:middleware_url+'/router', body: jsonDataObj, json:true}, function optionalCallback(err, httpResponse, body) {
         if (err) {
           console.log('Entered error block');
           return console.error('Error', err);
