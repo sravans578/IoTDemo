@@ -35,8 +35,9 @@ module.exports = {
           });
         } else {
           // Decrypting data
+          console.log ('Data before decryption' + ' :' + req.body.data);
           var decoded = jwt.verify(req.body.data, 'secretkey');
-          console.log(decoded);
+          console.log('Data after decrption' + ':' + decoded);
           res.json({
             message: 'success',
             authData
