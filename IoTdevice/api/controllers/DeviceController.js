@@ -9,6 +9,7 @@ var request = require('request');
 const jwt = require('jsonwebtoken');
 const middleware_url ='http://192.168.1.3:1337';
 const destination_url = 'http://192.168.1.3:1400/putData';
+require('dotenv').config();
 //Token to be included in header while making requests
 var TOKEN;
 
@@ -60,7 +61,7 @@ module.exports = {
         // This should be the dest server address
         destination: destination_url,
       };
-      var encrypted_data = jwt.sign({ data: data }, 'secretkey');
+      var encrypted_data = jwt.sign({ data: data }, process.env.KEY);
       var jsonDataObj = {'deviceID': DEVICE_ID, data: encrypted_data};
       
       request.post({headers: headers, url:middleware_url+'/router', body: jsonDataObj, json:true}, function optionalCallback(err, httpResponse, body) {
