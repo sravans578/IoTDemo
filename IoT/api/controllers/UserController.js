@@ -13,6 +13,7 @@ const saltRounds = 10;
 const jwt = require('jsonwebtoken');
 var http = require('http');
 const request = require('request');
+require('dotenv').config();
 module.exports = {
 
   router: function(req, res){
@@ -28,7 +29,7 @@ module.exports = {
       req.token = bearerToken;    
       //jwt verification
       console.log('reached here');
-      jwt.verify(req.token, 'secretkey', (err, authData) => {
+      jwt.verify(req.token, process.env.KEY, (err, authData) => {
         if(err) {
           res.json({
             message: 'Token expired',
@@ -36,7 +37,7 @@ module.exports = {
         } else {
           // Decrypting data
           console.log ('Data before decryption' + ' :' + req.body.data);
-          var decoded = jwt.verify(req.body.data, 'secretkey');
+          var decoded = jwt.verify(req.body.data, process.env.KEY);
           console.log(decoded.data.value);
           console.log('Data after decrption' + ':' + JSON.stringify(decoded));
           var decrypted_data = {
@@ -192,7 +193,7 @@ module.exports = {
               username: result[0].username ,
             };
 
-            jwt.sign({user}, 'secretkey' ,{ expiresIn: '60s'}, (err, token) => {
+            jwt.sign({user}, process.env.KEY, { expiresIn: '60s'}, (err, token) => {
               if (err) {
                 console.log('JWT Signing error');
                 return res.JSON({ 
